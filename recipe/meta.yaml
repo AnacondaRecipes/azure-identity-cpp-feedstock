@@ -1,5 +1,4 @@
 {% set version = "1.10.1" %}
-{% set sha256 = "313e53248dcc21ebf079d8fd447b986ce39440cf8890b3be9cd82dfa18856cc5" %}
 
 package:
   name: azure-identity-cpp
@@ -7,7 +6,7 @@ package:
 
 source:
   url: https://github.com/Azure/azure-sdk-for-cpp/archive/refs/tags/azure-identity_{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 313e53248dcc21ebf079d8fd447b986ce39440cf8890b3be9cd82dfa18856cc5
   patches:
     # https://github.com/Azure/azure-sdk-for-cpp/issues/4784
     - 0001-remove-wil-from-exported-config.patch
@@ -21,14 +20,14 @@ build:
 requirements:
   build:
     - {{ compiler("cxx") }}
-    - {{ stdlib("c") }}
     - cmake
     - ninja
+    - patch     # [unix]
+    - m2-patch  # [win]
   host:
-    # azure-core-cpp is pinned in conda-forge-pinning-feedstock
-    - azure-core-cpp
-    - openssl  # [not win]
-    - wil  # [win]
+    - azure-core-cpp 1.14
+    - openssl {{ openssl }}  # [not win]
+    - wil 1.0                # [win]
 
 test:
   requires:
