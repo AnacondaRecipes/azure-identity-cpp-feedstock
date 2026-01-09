@@ -22,7 +22,7 @@ requirements:
     - {{ compiler("cxx") }}
     - {{ stdlib("c") }}
     - cmake
-    - ninja
+    - ninja-base
   host:
     - azure-core-cpp 1.16.1
     - openssl {{ openssl }}  # [not win]
@@ -32,7 +32,7 @@ test:
   requires:
     - {{ compiler('cxx') }}
     - cmake
-    - ninja
+    - ninja-base
   files:
     - CMakeLists.txt
   commands:
@@ -43,11 +43,44 @@ test:
 
     # headers
     - test -f ${PREFIX}/include/azure/identity.hpp          # [unix]
+    - test -f ${PREFIX}/include/azure/identity/azure_cli_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/azure_pipelines_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/chained_token_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_assertion_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_certificate_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_secret_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/default_azure_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/detail/client_credential_core.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/detail/token_cache.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/dll_import_export.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/environment_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/managed_identity_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/rtti.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity/workload_identity_credential.hpp # [unix]
     - if not exist %LIBRARY_INC%\azure\identity.hpp exit 1  # [win]
-
+    - if not exist %LIBRARY_INC%\azure\identity\azure_cli_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\azure_pipelines_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\chained_token_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\client_assertion_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\client_certificate_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\client_secret_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\default_azure_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\detail\client_credential_core.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\detail\token_cache.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\dll_import_export.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\environment_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\managed_identity_credential.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\rtti.hpp exit 1  # [win]
+    - if not exist %LIBRARY_INC%\azure\identity\workload_identity_credential.hpp exit 1  # [win]
     # CMake metadata
-    - test -f ${PREFIX}/share/azure-identity-cpp/azure-identity-cppTargets.cmake                     # [unix]
+    - test -f ${PREFIX}/share/azure-identity-cpp/azure-identity-cppTargets.cmake  # [unix]
+    - test -f ${PREFIX}/share/azure-identity-cpp/azure-identity-cppConfig.cmake  # [unix]
+    - test -f ${PREFIX}/share/azure-identity-cpp/azure-identity-cppConfigVersion.cmake  # [unix]
+    - test -f ${PREFIX}/share/azure-identity-cpp/azure-identity-cppTargets-release.cmake  # [unix]
     - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppTargets.cmake exit 1  # [win]
+    - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppConfig.cmake exit 1  # [win]
+    - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppConfigVersion.cmake  exit 1  # [win]
+    - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppTargets-release.cmake  exit 1  # [win]
 
     # CMake find_package()
     - cmake $CMAKE_ARGS -G Ninja -S $RECIPE_DIR -B test-find-package    # [unix]
