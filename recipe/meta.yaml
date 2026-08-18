@@ -1,12 +1,13 @@
-{% set version = "1.13.2" %}
+{% set version = "1.13.3" %}
 
+# https://github.com/Azure/azure-sdk-for-cpp/blob/main/sdk/identity/azure-identity/vcpkg/vcpkg.json
 package:
   name: azure-identity-cpp
   version: {{ version }}
 
 source:
   url: https://github.com/Azure/azure-sdk-for-cpp/archive/refs/tags/azure-identity_{{ version }}.tar.gz
-  sha256: c057adbe6d2f046561f848ef8f33c110781739653575a411de828f726d8dc051
+  sha256: 4e83559e53b475e25f6a142604a477609b271111982bd2c88c8a4fe371338fcc
   patches:
     # https://github.com/Azure/azure-sdk-for-cpp/issues/4784
     - 0001-remove-wil-from-exported-config.patch
@@ -16,7 +17,6 @@ build:
   run_exports:
     - {{ pin_subpackage("azure-identity-cpp", max_pin="x.x.x") }}
 
-# https://github.com/Azure/azure-sdk-for-cpp/blob/main/sdk/identity/azure-identity/vcpkg/vcpkg.json
 requirements:
   build:
     - {{ compiler("cxx") }}
@@ -26,7 +26,7 @@ requirements:
   host:
     - azure-core-cpp 1.16.1
     - openssl {{ openssl }}  # [not win]
-    - wil 1.0                # [win]
+    - wil 1.0  # [win]
 
 test:
   requires:
@@ -37,26 +37,25 @@ test:
     - CMakeLists.txt
   commands:
     # shared libs
-    - test -f ${PREFIX}/lib/libazure-identity${SHLIB_EXT}   # [unix]
+    - test -f ${PREFIX}/lib/libazure-identity${SHLIB_EXT}  # [unix]
     - if not exist %LIBRARY_BIN%\azure-identity.dll exit 1  # [win]
     - if not exist %LIBRARY_LIB%\azure-identity.lib exit 1  # [win]
-
     # headers
-    - test -f ${PREFIX}/include/azure/identity.hpp          # [unix]
-    - test -f ${PREFIX}/include/azure/identity/azure_cli_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/azure_pipelines_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/chained_token_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/client_assertion_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/client_certificate_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/client_secret_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/default_azure_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/detail/client_credential_core.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/detail/token_cache.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/dll_import_export.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/environment_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/managed_identity_credential.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/rtti.hpp # [unix]
-    - test -f ${PREFIX}/include/azure/identity/workload_identity_credential.hpp # [unix]
+    - test -f ${PREFIX}/include/azure/identity.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/azure_cli_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/azure_pipelines_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/chained_token_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_assertion_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_certificate_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/client_secret_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/default_azure_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/detail/client_credential_core.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/detail/token_cache.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/dll_import_export.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/environment_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/managed_identity_credential.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/rtti.hpp  # [unix]
+    - test -f ${PREFIX}/include/azure/identity/workload_identity_credential.hpp  # [unix]
     - if not exist %LIBRARY_INC%\azure\identity.hpp exit 1  # [win]
     - if not exist %LIBRARY_INC%\azure\identity\azure_cli_credential.hpp exit 1  # [win]
     - if not exist %LIBRARY_INC%\azure\identity\azure_pipelines_credential.hpp exit 1  # [win]
@@ -81,9 +80,8 @@ test:
     - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppConfig.cmake exit 1  # [win]
     - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppConfigVersion.cmake  exit 1  # [win]
     - if not exist %LIBRARY_PREFIX%\share\azure-identity-cpp\azure-identity-cppTargets-release.cmake  exit 1  # [win]
-
     # CMake find_package()
-    - cmake $CMAKE_ARGS -G Ninja -S $RECIPE_DIR -B test-find-package    # [unix]
+    - cmake $CMAKE_ARGS -G Ninja -S $RECIPE_DIR -B test-find-package  # [unix]
     - cmake %CMAKE_ARGS% -G Ninja -S %RECIPE_DIR% -B test-find-package  # [win]
 
 about:
