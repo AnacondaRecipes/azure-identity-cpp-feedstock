@@ -1,8 +1,9 @@
+{% set name = "azure-identity-cpp" %}
 {% set version = "1.13.3" %}
 
 # https://github.com/Azure/azure-sdk-for-cpp/blob/main/sdk/identity/azure-identity/vcpkg/vcpkg.json
 package:
-  name: azure-identity-cpp
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -19,9 +20,9 @@ build:
 
 requirements:
   build:
-    - {{ compiler("cxx") }}
     - {{ stdlib("c") }}
-    - cmake
+    - {{ compiler("cxx") }}
+    - cmake >=3.13
     - ninja-base
   host:
     - azure-core-cpp 1.16.1
